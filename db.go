@@ -56,6 +56,10 @@ func (db *DB) Get(key []byte) ([]byte, error) {
 		return nil, ErrKeyNotFound
 	}
 
+	return db.getValueByPosition(logRecordPos)
+}
+
+func (db *DB) getValueByPosition(logRecordPos *data.LogRecordPos) ([]byte, error) {
 	var dataFile *data.DataFile
 	if db.activeFile.FileId == logRecordPos.Fid {
 		dataFile = db.activeFile
@@ -274,4 +278,32 @@ func (db *DB) Delete(key []byte) error {
 	}
 
 	return nil
+}
+
+func (db *DB) Close() error {
+	if db.activeFile == nil {
+		return nil
+	}
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	if err := db.activeFile.Close(); err != nil {
+		return err
+	}
+
+	for _, file := range db.olderFiles {
+		if err := file.Close(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (db *DB) Sync() error {
+	if db.activeFile == nil {
+		return nil
+	}
+	db.mu.Lock()
+	defer db.mu.Unlock()
+	return db.activeFile.Sync()
 }

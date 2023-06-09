@@ -17,9 +17,19 @@ const (
 	ART
 )
 
+type IteratorOptions struct {
+	Prefix  []byte
+	Reverse bool
+}
+
 var DefaultOptions = Options{
 	DirPath:      "./database",
 	DataFileSize: 256 * 1024 * 1024,
 	SynWrite:     false,
 	IndexType:    BTree,
+}
+
+var DefaultIteratorOptions = IteratorOptions{
+	Prefix:  nil,
+	Reverse: false,
 }
