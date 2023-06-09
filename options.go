@@ -16,3 +16,10 @@ const (
 	BTree IndexerType = iota + 1
 	ART
 )
+
+var DefaultOptions = Options{
+	DirPath:      "./database",
+	DataFileSize: 256 * 1024 * 1024,
+	SynWrite:     false,
+	IndexType:    BTree,
+}

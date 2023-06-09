@@ -67,7 +67,7 @@ func (df *DataFile) ReadLogRecord(offset int64) (*LogRecord, int64, error) {
 		return nil, 0, err
 	}
 
-	header, headerSize := decodeLogRecordHeader(headerBuf)
+	header, headerSize := DecodeLogRecordHeader(headerBuf)
 	if header == nil {
 		return nil, 0, io.EOF
 	}
