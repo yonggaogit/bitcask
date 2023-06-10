@@ -10,6 +10,7 @@ type LogRecordType = byte
 const (
 	LogRecordNormal LogRecordType = iota
 	LogRecordDeleted
+	LogRecordTxnFinished
 )
 
 // crc type keySize valueSize
@@ -32,6 +33,12 @@ type logRecordHeader struct {
 	recordType LogRecordType
 	keySize    uint32
 	valueSize  uint32
+}
+
+// TransactionRecord 暂存事务相关的数据
+type TransactionRecord struct {
+	Record *LogRecord
+	Pos    *LogRecordPos
 }
 
 func EncodeLogRecord(logRecord *LogRecord) ([]byte, int64) {

@@ -33,3 +33,11 @@ var DefaultIteratorOptions = IteratorOptions{
 	Prefix:  nil,
 	Reverse: false,
 }
+
+type WriteBatchOptions struct {
+	// 一个批次中最大的数据量
+	MaxBatchNum uint
+
+	// 提交事务时是否 sync 持久化
+	SyncWrites bool
+}
